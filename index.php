@@ -32,6 +32,6 @@ switch ($action) {
         $spotify->add();
         break;
     default:
-        echo '<a href="/slackbot/spotifyjuke/auth">Log In</a>';
+        echo '<a href="/auth">Log In</a>';
         break;
 }
