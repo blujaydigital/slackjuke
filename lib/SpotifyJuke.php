@@ -43,7 +43,11 @@ class SpotifyJuke {
         $api = new SpotifyWebAPI;
        
         $api->setAccessToken($this->_getToken());
-        $search = $_POST['search'];
+        $search = $_POST['text'];
+
+        if (strlen($search) < 2){
+            echo 'Please enter in a more specific search phrase';
+        }
 
         // Find out what we searched for
         $tracks     = $api->search($search, 'track');
@@ -51,8 +55,6 @@ class SpotifyJuke {
 
         $track_id   = $track->id;
         $track_name = $track->name;
-
-        echo 'Adding '. $track->artists[0]->name. ' - '. $track_name . "<br/>";
 
         // See if the track already exists 
         if($api->addUserPlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), $track_id )){
