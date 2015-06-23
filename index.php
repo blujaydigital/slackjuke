@@ -19,7 +19,7 @@ $provider = new Session(
 $spotify = new SpotifyJuke($provider);
 
 
-$action = isset($_GET['action']) ? $_GET['action'] : '';
+$action = isset($_GET['action']) ? trim($_GET['action'], '/') : '';
 
 switch ($action){
     case 'auth':

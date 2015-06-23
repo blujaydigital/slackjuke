@@ -71,12 +71,14 @@ class SpotifyJuke {
     private function _getToken(){
         $result = $this->_db->query('SELECT key, token FROM access WHERE key = "access"');
         $result = $result->fetchArray();
+        die($result['key']);
         return $result['key'];
     }
 
     private function _getRefreshToken(){
         $result = $this->_db->query('SELECT key, token FROM access WHERE key = "refresh"');
         $result = $result->fetchArray();
+        die($result['key']);
         return $result['key'];
     }
 
