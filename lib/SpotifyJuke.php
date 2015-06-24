@@ -124,7 +124,7 @@ class SpotifyJuke
             
             // See if the track already exists
             if ($this->_api->addUserPlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), $track->id)) {
-                echo $track->artists[0]->name . ' - ' . $track->name . " added! - ";
+                echo $track->artists[0]->name . ' - ' . $track->name . " added! - ".$this->_getToken();
             } else {
                 echo $track->artists[0]->name . ' - ' . $track->name . " failed to add!";
             }
