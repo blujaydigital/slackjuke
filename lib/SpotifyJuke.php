@@ -127,7 +127,7 @@ class SpotifyJuke
 
     private function _processCommands($command){
 
-        if (strpos('!!', $command) === 0){
+        if (strpos($command, '!!') === 0){
             $command = substr($command,2);
 
             switch ($command){
