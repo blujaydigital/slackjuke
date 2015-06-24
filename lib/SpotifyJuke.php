@@ -146,6 +146,7 @@ class SpotifyJuke
                     $this->_wipe();
                     break;
                  case 'auth':
+                    echo 'trying to auth';
                     $this->auth();
                     break;
                 default:
