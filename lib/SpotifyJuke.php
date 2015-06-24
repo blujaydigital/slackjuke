@@ -55,7 +55,7 @@ class SpotifyJuke
     private function _refresh()
     {
         $this->_provider->refreshAccessToken();
-        $this->_db->query('UPDATE access SET token = "' . $this->_provider->getAccessToken() . '"  WHERE key = "refresh"');
+        $this->_db->query('UPDATE access SET token = "' . $this->_provider->getAccessToken() . '"  WHERE key = "access"');
         $this->_db->query('UPDATE access SET token = "' . $this->_provider->getRefreshToken() . '" WHERE key = "refresh"');
     }
 
@@ -104,6 +104,11 @@ class SpotifyJuke
         // Find out what we searched for
         $tracks = $api->search($search, 'track');
         $track = $tracks->tracks->items[0]; // Get the first track
+
+        if (count($tracks->tracks->items) == 0){
+            echo 'Error: Song not found!';
+            die();
+        }
 
         $track_id = $track->id;
         $track_name = $track->name;
