@@ -94,7 +94,7 @@ class SpotifyJuke
         $this->_provider->setRefreshToken($this->_getRefreshToken());
 
         if ($this->_provider->refreshAccessToken()) {
-
+            $this->_refresh();
             $this->_api->setAccessToken($this->_getToken());
 
             $search = $_POST['text'];
@@ -106,10 +106,17 @@ class SpotifyJuke
                 echo 'Please enter in a more specific search phrase';
             }
 
-            // Find out what we searched for
-            $tracks = $this->_api->search($search, 'track');
-            $track = $tracks->tracks->items[0]; // Get the first track
-
+            
+            try {
+                // Perform the search
+                $tracks = $this->_api->search($search, 'track');
+                $track = $tracks->tracks->items[0]; // Get the first track
+            } catch(Exception $e){
+                echo 'Caught Exception:'. $e->getMesage();
+                echo 'Attempting to Reauth - Please try again!';
+                $this->auth();
+            }
+            
             if (count($tracks->tracks->items) == 0) {
                 echo 'Error: Song not found!';
                 die();
@@ -117,7 +124,7 @@ class SpotifyJuke
             
             // See if the track already exists
             if ($this->_api->addUserPlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), $track->id)) {
-                echo $track->artists[0]->name . ' - ' . $track->name . " added!";
+                echo $track->artists[0]->name . ' - ' . $track->name . " added! - ";
             } else {
                 echo $track->artists[0]->name . ' - ' . $track->name . " failed to add!";
             }
