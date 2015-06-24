@@ -10,14 +10,16 @@ class SpotifyJuke
     private $_provider;
     private $_refreshToken;
     private $_db;
+    private $_api;
 
     /**
      * @param Session $provider
      */
     public function __construct(Session $provider)
     {
-        $this->_provider = $provider;
-        $this->_db = new \SQLite3("db/test.db");
+        $this->_provider    = $provider;
+        $this->_db          = new \SQLite3("db/test.db");
+        $this->_api         = new SpotifyWebAPI;
     }
 
     /**
@@ -29,7 +31,7 @@ class SpotifyJuke
         $scopes = ['playlist-modify-public', 'playlist-modify-private'];
 
         $authUrl = $this->_provider->getAuthorizeUrl(array(
-            'scope' => $scopes
+            'scope' => $scopes,
         ));
 
         header('Location: ' . $authUrl);
@@ -93,8 +95,7 @@ class SpotifyJuke
 
         if ($this->_provider->refreshAccessToken()) {
 
-            $api = new SpotifyWebAPI;
-            $api->setAccessToken($this->_getToken());
+            $this->_api->setAccessToken($this->_getToken());
 
             $search = $_POST['text'];
 
@@ -127,10 +128,11 @@ class SpotifyJuke
 
     private function _processCommands($command){
 
+        // Check to see if it's a system command
         if (strpos($command, '!!') === 0){
             $command = substr($command,2);
-
-            switch ($command){
+            // It is! Check to see which command.
+            switch ($command){  
                 case 'wipe':
                     $this->_wipe();
                     break;
@@ -138,15 +140,21 @@ class SpotifyJuke
                     echo 'Invalid system command';
                     break;
             }
-
+            die();
         } else {
+            // Not a system command, continue with normal flow;
             return false;
         }
-
     }
 
+    /**
+     * Remove the contents of the play list
+     * @return null;
+     */
     private function _wipe(){
             echo 'Wiping Playlist.';
+            // Set the playlist to an empty array
+            $this->_api->replacePlaylistTracks('username', 'playlist_id', array());
     }
 
     /**
