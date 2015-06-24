@@ -90,34 +90,35 @@ class SpotifyJuke
     public function add()
     {
         $this->_provider->setRefreshToken($this->_getRefreshToken());
-        var_dump($this->_provider->refreshAccessToken());
 
-        $api = new SpotifyWebAPI;
+        if ($this->_provider->refreshAccessToken()) {
 
-        $api->setAccessToken($this->_getToken());
-        $search = $_POST['text'];
+            $api = new SpotifyWebAPI;
+            $api->setAccessToken($this->_getToken());
 
-        if (strlen($search) < 2) {
-            echo 'Please enter in a more specific search phrase';
-        }
+            $search = $_POST['text'];
 
-        // Find out what we searched for
-        $tracks = $api->search($search, 'track');
-        $track = $tracks->tracks->items[0]; // Get the first track
+            if (strlen($search) < 2) {
+                echo 'Please enter in a more specific search phrase';
+            }
 
-        if (count($tracks->tracks->items) == 0){
-            echo 'Error: Song not found!';
-            die();
-        }
+            // Find out what we searched for
+            $tracks = $api->search($search, 'track');
+            $track = $tracks->tracks->items[0]; // Get the first track
 
-        $track_id = $track->id;
-        $track_name = $track->name;
-
-        // See if the track already exists
-        if ($api->addUserPlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), $track_id)) {
-            echo $track->artists[0]->name . ' - ' . $track_name . " added!";
+            if (count($tracks->tracks->items) == 0) {
+                echo 'Error: Song not found!';
+                die();
+            }
+            
+            // See if the track already exists
+            if ($api->addUserPlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), $track->id)) {
+                echo $track->artists[0]->name . ' - ' . $track->name . " added!";
+            } else {
+                echo $track->artists[0]->name . ' - ' . $track->name . " failed to add!";
+            }
         } else {
-            echo $track->artists[0]->name . ' - ' . $track_name . " failed to add!";
+            echo 'Unable to refresh access token - please try authenticate again.';
         }
     }
 
