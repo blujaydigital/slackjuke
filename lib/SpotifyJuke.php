@@ -98,6 +98,9 @@ class SpotifyJuke
 
             $search = $_POST['text'];
 
+            // Check for system command
+            $this->_processCommands($search);
+           
             if (strlen($search) < 2) {
                 echo 'Please enter in a more specific search phrase';
             }
@@ -120,6 +123,30 @@ class SpotifyJuke
         } else {
             echo 'Unable to refresh access token - please try authenticate again.';
         }
+    }
+
+    private function _processCommands($command){
+
+        if (strpos('!!', $command) === 0){
+            $command = substr($command,2);
+
+            switch ($command){
+                case 'wipe':
+                    $this->_wipe();
+                    break;
+                default:
+                    echo 'Invalid system command';
+                    break;
+            }
+
+        } else {
+            return false;
+        }
+
+    }
+
+    private function _wipe(){
+            echo 'Wiping Playlist.';
     }
 
     /**
