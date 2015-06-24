@@ -145,6 +145,9 @@ class SpotifyJuke
                 case 'wipe':
                     $this->_wipe();
                     break;
+                 case 'auth':
+                    $this->auth();
+                    break;
                 default:
                     echo 'Invalid system command';
                     break;
