@@ -89,7 +89,7 @@ class SpotifyJuke
      */
     public function add()
     {
-        $this->_provider->setRefreshToken($this->_getRefreshToken());
+        var_dump($this->_provider->setRefreshToken($this->_getRefreshToken()));
         $this->_provider->refreshAccessToken();
 
         $api = new SpotifyWebAPI;

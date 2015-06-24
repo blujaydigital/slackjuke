@@ -25,7 +25,7 @@ switch ($action) {
         $spotify->auth();
         break;
     case 'callback':
-        echo 'Logged In';
+        echo 'Logged In - You can close this window, and try the slack command';
         $spotify->callback();
         break;
     case 'add':
