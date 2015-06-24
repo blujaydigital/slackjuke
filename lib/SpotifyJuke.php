@@ -107,7 +107,7 @@ class SpotifyJuke
             }
 
             // Find out what we searched for
-            $tracks = $api->search($search, 'track');
+            $tracks = $this->_api->search($search, 'track');
             $track = $tracks->tracks->items[0]; // Get the first track
 
             if (count($tracks->tracks->items) == 0) {
