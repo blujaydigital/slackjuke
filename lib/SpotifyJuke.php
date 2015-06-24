@@ -128,6 +128,8 @@ class SpotifyJuke
 
     private function _processCommands($command){
 
+        // TODO - Check user auth
+
         // Check to see if it's a system command
         if (strpos($command, '!!') === 0){
             $command = substr($command,2);
@@ -154,7 +156,7 @@ class SpotifyJuke
     private function _wipe(){
             echo 'Wiping Playlist.';
             // Set the playlist to an empty array
-            $this->_api->replacePlaylistTracks('username', 'playlist_id', array());
+            $this->_api->replacePlaylistTracks(getenv('SPOTIFY_USERNAME'), getenv('SPOTIFY_PLAYLIST'), array());
     }
 
     /**
