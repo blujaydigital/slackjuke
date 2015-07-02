@@ -10,7 +10,7 @@
     ],
     
     "require": {
-       "maknz/slack": "0.2.*",
+        "maknz/slack": "0.2.*",
         "madcoda/php-youtube-api": "dev-master",
         "vlucas/phpdotenv": "^2.1@dev",
         "jwilsson/spotify-web-api-php": "0.8.*"
